@@ -9,16 +9,37 @@ class LogoApp extends StatefulWidget {
   State<LogoApp> createState() => _LogoAppState();
 }
 
-class _LogoAppState extends State<LogoApp> {
+class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController controller;
+
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: const Duration(seconds: 2), vsync: this);
+
+    animation = Tween<double>(begin: 0, end: 300).animate(controller);
+    animation.addListener(() {
+      setState(() {});
+    });
+
+    controller.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
-        height: 300,
-        width: 300,
+        height: animation.value,
+        width: animation.value,
         child: const FlutterLogo(),
       ),
     );
   }
+  // @override
+  // void dispose() { // kurang tau fungsinya
+  //   controller.dispose();
+  //   super.dispose();
+  // }
 }
